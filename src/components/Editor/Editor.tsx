@@ -1,9 +1,21 @@
-import { Background, Controls, ReactFlow } from '@xyflow/react';
+import {
+    addEdge,
+    applyEdgeChanges,
+    applyNodeChanges,
+    Background,
+    Controls,
+    Edge,
+    OnConnect,
+    OnEdgesChange,
+    OnNodesChange,
+    ReactFlow,
+} from '@xyflow/react';
 
 import { nodeTypes } from './nodes/nodeTypes';
 import { NodeType } from './nodes/types';
+import { useCallback, useState } from 'react';
 
-const nodes: NodeType[] = [
+const initialNodes: NodeType[] = [
     {
         id: '1',
         type: 'coalSupplier',
@@ -48,9 +60,35 @@ const nodes: NodeType[] = [
     },
 ];
 
+const initialEdges: Edge[] = [];
+
 export const Editor = () => {
+    const [nodes, setNodes] = useState(initialNodes);
+    const [edges, setEdges] = useState(initialEdges);
+
+    const handleNodesChange: OnNodesChange<NodeType> = useCallback(
+        (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+        []
+    );
+    const handleEdgesChange: OnEdgesChange = useCallback(
+        (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+        []
+    );
+    const handleConnect: OnConnect = useCallback(
+        (connection) => setEdges((eds) => addEdge(connection, eds)),
+        []
+    );
+
     return (
-        <ReactFlow<NodeType> nodes={nodes} nodeTypes={nodeTypes}>
+        <ReactFlow<NodeType>
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={handleNodesChange}
+            onEdgesChange={handleEdgesChange}
+            onConnect={handleConnect}
+            nodeTypes={nodeTypes}
+            fitView
+        >
             <Background />
             <Controls />
         </ReactFlow>
