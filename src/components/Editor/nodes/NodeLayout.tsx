@@ -34,7 +34,7 @@ export const NodeLayout = (props: NodeLayoutProps) => {
                     />
                 )}
             </div>
-            <div className="text-xs text-center max-w-18">{name}</div>
+            <div className="text-xs text-center max-w-20">{name}</div>
             {children}
         </div>
     );
