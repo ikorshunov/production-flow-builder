@@ -1,4 +1,7 @@
-import { Node, BuiltInNode } from '@xyflow/react';
+import { Node, BuiltInNode, HandleType } from '@xyflow/react';
+
+export type ResourceType = 'coal' | 'power' | 'rubber' | 'paint' | 'rubberDuck';
+export type HandleId = `${ResourceType}-${HandleType}`;
 
 export type CoalPowerPlantNode = Node<{ power: number }, 'coalPowerPlant'>;
 export type WindPowerPlantNode = Node<{ power: number }, 'windPowerPlant'>;

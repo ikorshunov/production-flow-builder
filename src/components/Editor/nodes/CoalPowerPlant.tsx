@@ -1,9 +1,8 @@
-import { Position } from '@xyflow/react';
 import { ImPower } from 'react-icons/im';
 import { GiCoalWagon } from 'react-icons/gi';
 
 import { NodeLayout } from './NodeLayout';
-import { Handle } from './Handle';
+import { ResourceHandle } from './ResourceHandle';
 
 export const CoalPowerPlant = () => {
     return (
@@ -13,18 +12,8 @@ export const CoalPowerPlant = () => {
             mainIconColor="#ffda00"
             auxIcon={GiCoalWagon}
         >
-            <Handle
-                id="powerOutput"
-                icon={<ImPower color="#ffda00" />}
-                type="source"
-                position={Position.Right}
-            />
-            <Handle
-                id="coalInput"
-                icon={<GiCoalWagon color="black" />}
-                type="target"
-                position={Position.Left}
-            />
+            <ResourceHandle type="source" resourceType="power" />
+            <ResourceHandle type="target" resourceType="coal" />
         </NodeLayout>
     );
 };

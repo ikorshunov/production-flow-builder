@@ -1,9 +1,7 @@
-import { Position } from '@xyflow/react';
-import { ImPower } from 'react-icons/im';
 import { GiWindTurbine } from 'react-icons/gi';
 
 import { NodeLayout } from './NodeLayout';
-import { Handle } from './Handle';
+import { ResourceHandle } from './ResourceHandle';
 
 export const WindPowerPlant = () => {
     return (
@@ -12,12 +10,7 @@ export const WindPowerPlant = () => {
             mainIcon={GiWindTurbine}
             mainIconColor="#0078ff"
         >
-            <Handle
-                id="powerOutput"
-                icon={<ImPower color="#ffda00" />}
-                type="source"
-                position={Position.Right}
-            />
+            <ResourceHandle type="source" resourceType="power" />
         </NodeLayout>
     );
 };

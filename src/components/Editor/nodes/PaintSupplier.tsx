@@ -1,8 +1,7 @@
-import { Position } from '@xyflow/react';
 import { GiPaintBucket } from 'react-icons/gi';
 
 import { NodeLayout } from './NodeLayout';
-import { Handle } from './Handle';
+import { ResourceHandle } from './ResourceHandle';
 
 export const PaintSupplier = () => {
     return (
@@ -11,12 +10,7 @@ export const PaintSupplier = () => {
             mainIcon={GiPaintBucket}
             mainIconColor="#8200ff"
         >
-            <Handle
-                id="paintOutput"
-                icon={<GiPaintBucket color="#8200ff" />}
-                type="source"
-                position={Position.Right}
-            />
+            <ResourceHandle type="source" resourceType="paint" />
         </NodeLayout>
     );
 };

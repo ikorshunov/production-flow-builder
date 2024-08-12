@@ -1,8 +1,7 @@
-import { Position } from '@xyflow/react';
 import { SiGumtree } from 'react-icons/si';
 
 import { NodeLayout } from './NodeLayout';
-import { Handle } from './Handle';
+import { ResourceHandle } from './ResourceHandle';
 
 export const RubberSupplier = () => {
     return (
@@ -11,12 +10,7 @@ export const RubberSupplier = () => {
             mainIcon={SiGumtree}
             mainIconColor="#fff"
         >
-            <Handle
-                id="rubberOutput"
-                icon={<SiGumtree color="white" />}
-                type="source"
-                position={Position.Right}
-            />
+            <ResourceHandle type="source" resourceType="rubber" />
         </NodeLayout>
     );
 };
