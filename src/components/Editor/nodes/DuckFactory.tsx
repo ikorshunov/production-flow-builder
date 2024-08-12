@@ -1,18 +1,15 @@
-import { MdFactory } from 'react-icons/md';
 import { GiPlasticDuck } from 'react-icons/gi';
 
-import { NodeLayout } from './NodeLayout';
 import { ResourceHandle } from '../handles/ResourceHandle';
+import { NodeLayout } from './NodeLayout';
 
 export const DuckFactory = () => {
     return (
         <NodeLayout
             name="Duck factory"
             category="factory"
-            mainIcon={MdFactory}
-            mainIconColor="#9b5151"
-            auxIcon={GiPlasticDuck}
-            auxIconColor="#ffeb00"
+            icon={GiPlasticDuck}
+            iconColor="#ffeb00"
         >
             <ResourceHandle type="source" resourceType="rubberDuck" />
             <ResourceHandle

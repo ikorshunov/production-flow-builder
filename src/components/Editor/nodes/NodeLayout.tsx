@@ -1,59 +1,45 @@
 import { CSSProperties, PropsWithChildren, useMemo } from 'react';
 import { IconType } from 'react-icons';
-import { NodeCategory } from './types';
-import { HexColor } from '../types';
+
+import { HexColor } from 'src/types';
+import { categoryLayoutConfigMap } from '../constants';
+import { NodeCategory } from '../types';
 
 type NodeLayoutProps = PropsWithChildren<{
     name: string;
     category: NodeCategory;
-    mainIcon: IconType;
-    mainIconColor?: HexColor;
-    auxIcon?: IconType;
-    auxIconColor?: HexColor;
+    icon: IconType;
+    iconColor?: HexColor;
 }>;
 
-const categoryToColorMap: Record<NodeCategory, HexColor> = {
-    supplier: '#d6ff8f',
-    power: '#ffb392',
-    factory: '#c0ebff',
-    store: '#f8ccff',
-};
-
 export const NodeLayout = (props: NodeLayoutProps) => {
+    const { children, name, category, icon: Icon, iconColor = '#000' } = props;
+
     const {
-        children,
-        name,
-        category,
-        mainIcon: MainIcon,
-        mainIconColor = '#000',
-        auxIcon: AuxIcon,
-        auxIconColor = '#000',
-    } = props;
+        nodeColor,
+        icon: CategoryIcon,
+        iconColor: categoryIconColor,
+    } = categoryLayoutConfigMap[category];
+
     const nodeStyle: CSSProperties = useMemo(
         () => ({
-            backgroundColor: categoryToColorMap[category],
+            backgroundColor: nodeColor,
         }),
-        [category]
+        [nodeColor]
     );
 
     return (
         <div
-            className="p-8 rounded-lg flex flex-col items-center gap-2 bg-neutral-300"
+            className="p-7 rounded-lg flex flex-col items-center gap-2"
             style={nodeStyle}
         >
             <div>
-                <MainIcon
-                    className="drop-shadow-md"
-                    color={mainIconColor}
-                    size="40"
+                <Icon className="drop-shadow-md" color={iconColor} size="40" />
+                <CategoryIcon
+                    className="absolute left-1/2 -translate-x-1/2 top-2 drop-shadow-md"
+                    color={categoryIconColor}
+                    size="15"
                 />
-                {AuxIcon && (
-                    <AuxIcon
-                        className="absolute left-1/2 -translate-x-1/2 top-1 drop-shadow-md"
-                        color={auxIconColor}
-                        size="20"
-                    />
-                )}
             </div>
             <div className="text-xs text-center max-w-20">{name}</div>
             {children}

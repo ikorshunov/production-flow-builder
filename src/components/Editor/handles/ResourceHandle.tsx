@@ -5,19 +5,16 @@ import {
 } from '@xyflow/react';
 import classNames from 'classnames';
 
+import { ResourceType } from '../types';
 import { HandleId } from './types';
 import { HandleIcon } from './HandleIcon';
-import { ResourceType } from '../types';
 
 type ResourceHandleProps = Omit<ReactFlowHandleProps, 'id' | 'position'> & {
     resourceType: ResourceType;
     size?: 'sm' | 'md';
 };
 
-function getHandleClassName(params: {
-    size: 'sm' | 'md';
-    customClassName?: string;
-}) {
+function getClassName(params: { size: 'sm' | 'md'; customClassName?: string }) {
     const { size, customClassName } = params;
     const isMd = size === 'md';
     const isSm = size === 'sm';
@@ -43,7 +40,7 @@ export const ResourceHandle = (props: ResourceHandleProps) => {
         className: customClassName,
         ...restProps
     } = props;
-    const className = getHandleClassName({ size, customClassName });
+    const className = getClassName({ size, customClassName });
     const position = type === 'source' ? Position.Right : Position.Left;
     const id: HandleId = `${resourceType}-${type}`;
 

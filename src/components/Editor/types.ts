@@ -6,4 +6,4 @@ export type ResourceType =
     | 'rubberDuck'
     | 'any';
 
-export type HexColor = `#${string}`;
+export type NodeCategory = 'supplier' | 'power' | 'factory' | 'store';

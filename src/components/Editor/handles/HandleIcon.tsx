@@ -4,7 +4,8 @@ import { ImPower } from 'react-icons/im';
 import { SiGumtree } from 'react-icons/si';
 import { IconBaseProps, IconType } from 'react-icons';
 
-import { HexColor, ResourceType } from '../types';
+import { HexColor } from 'src/types';
+import { ResourceType } from '../types';
 
 type HandleIconProps = IconBaseProps & {
     name: ResourceType;

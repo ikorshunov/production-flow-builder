@@ -1,7 +1,5 @@
 import { Node } from '@xyflow/react';
 
-export type NodeCategory = 'supplier' | 'power' | 'factory' | 'store';
-
 export type CoalPowerPlantNode = Node<{ power: number }, 'coalPowerPlant'>;
 export type WindPowerPlantNode = Node<{ power: number }, 'windPowerPlant'>;
 export type CoalSupplierNode = Node<{ supplyRate: number }, 'coalSupplier'>;

@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import {
     addEdge,
     applyEdgeChanges,
@@ -11,12 +12,12 @@ import {
     OnNodesChange,
     ReactFlow,
 } from '@xyflow/react';
-import { useCallback, useState } from 'react';
 
 import { isSourceHandle, isTargetHandle } from './handles/helpers';
 import { nodeTypes } from './nodeTypes';
 import { NodeType } from './nodes/types';
 import { ResourceType } from './types';
+import { NodeSelectorPanel } from './panels/NodeSelectorPanel';
 
 const initialNodes: NodeType[] = [
     {
@@ -117,6 +118,7 @@ export const Editor = () => {
             nodeTypes={nodeTypes}
             fitView
         >
+            <NodeSelectorPanel />
             <Background />
             <Controls />
         </ReactFlow>

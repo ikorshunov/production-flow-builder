@@ -1,15 +1,15 @@
-import { IoStorefrontSharp } from 'react-icons/io5';
+import { HiMiniInboxArrowDown } from 'react-icons/hi2';
 
-import { NodeLayout } from './NodeLayout';
 import { ResourceHandle } from '../handles/ResourceHandle';
+import { NodeLayout } from './NodeLayout';
 
 export const Store = () => {
     return (
         <NodeLayout
             name="Store"
             category="store"
-            mainIcon={IoStorefrontSharp}
-            mainIconColor="#dc029b"
+            icon={HiMiniInboxArrowDown}
+            iconColor="#fff"
         >
             <ResourceHandle type="target" resourceType="any" />
         </NodeLayout>
