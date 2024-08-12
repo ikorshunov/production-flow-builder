@@ -14,7 +14,7 @@ import {
 import { useCallback, useState } from 'react';
 
 import { isSourceHandle, isTargetHandle } from './handles/helpers';
-import { nodeTypes } from './nodes/nodeTypes';
+import { nodeTypes } from './nodeTypes';
 import { NodeType } from './nodes/types';
 import { ResourceType } from './types';
 
