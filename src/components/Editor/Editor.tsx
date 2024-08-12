@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { DragEvent, useCallback, useState } from 'react';
 import {
     addEdge,
     applyEdgeChanges,
@@ -11,6 +11,7 @@ import {
     OnEdgesChange,
     OnNodesChange,
     ReactFlow,
+    useReactFlow,
 } from '@xyflow/react';
 
 import { isSourceHandle, isTargetHandle } from './handles/helpers';
@@ -18,57 +19,11 @@ import { nodeTypes } from './nodeTypes';
 import { NodeType } from './nodes/types';
 import { ResourceType } from './types';
 import { NodeSelectorPanel } from './panels/NodeSelectorPanel';
-
-const initialNodes: NodeType[] = [
-    {
-        id: '1',
-        type: 'coalSupplier',
-        position: { x: 200, y: 200 },
-        data: { supplyRate: 0 },
-    },
-    {
-        id: '2',
-        type: 'coalPowerPlant',
-        position: { x: 400, y: 200 },
-        data: { power: 0 },
-    },
-    {
-        id: '3',
-        type: 'duckFactory',
-        position: { x: 625, y: 200 },
-        data: { productionRate: 0 },
-    },
-    {
-        id: '4',
-        type: 'store',
-        position: { x: 825, y: 200 },
-        data: { stock: { rubberDuck: 0 } },
-    },
-    {
-        id: '5',
-        type: 'windPowerPlant',
-        position: { x: 400, y: 350 },
-        data: { power: 0 },
-    },
-    {
-        id: '6',
-        type: 'rubberSupplier',
-        position: { x: 200, y: 350 },
-        data: { supplyRate: 0 },
-    },
-    {
-        id: '7',
-        type: 'paintSupplier',
-        position: { x: 200, y: 500 },
-        data: { supplyRate: 0 },
-    },
-];
-
-const initialEdges: Edge[] = [];
+import { createNewNode } from './helpers';
 
 export const Editor = () => {
-    const [nodes, setNodes] = useState(initialNodes);
-    const [edges, setEdges] = useState(initialEdges);
+    const [nodes, setNodes] = useState<NodeType[]>([]);
+    const [edges, setEdges] = useState<Edge[]>([]);
 
     const handleNodesChange: OnNodesChange<NodeType> = useCallback(
         (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -99,12 +54,42 @@ export const Editor = () => {
             if (targetResource === 'any') {
                 // Allow any node to connect to an "any" resource target handle.
                 return true;
-            } else {
-                // Otherwise, allow connections only between handles of the same resource type.
-                return sourceResource === targetResource;
             }
+
+            // Otherwise, allow connections only between handles of the same resource type.
+            return sourceResource === targetResource;
         },
         []
+    );
+
+    // Made with drag & drop feature tutorial: https://reactflow.dev/examples/interaction/drag-and-drop
+    const { screenToFlowPosition } = useReactFlow();
+
+    const handleDragOver = useCallback((event: DragEvent) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+    }, []);
+
+    const handleDrop = useCallback(
+        (event: DragEvent) => {
+            event.preventDefault();
+            const type = event.dataTransfer.getData(
+                'application/reactflow'
+            ) as NodeType['type'];
+
+            // check if the dropped element is valid
+            if (typeof type === 'undefined' || !type) {
+                return;
+            }
+
+            const position = screenToFlowPosition({
+                x: event.clientX,
+                y: event.clientY,
+            });
+            const newNode = createNewNode(type, position);
+            setNodes((nds) => nds.concat(newNode));
+        },
+        [screenToFlowPosition]
     );
 
     return (
@@ -114,9 +99,10 @@ export const Editor = () => {
             onNodesChange={handleNodesChange}
             onEdgesChange={handleEdgesChange}
             onConnect={handleConnect}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
             isValidConnection={validateNewConnection}
             nodeTypes={nodeTypes}
-            fitView
         >
             <NodeSelectorPanel />
             <Background />

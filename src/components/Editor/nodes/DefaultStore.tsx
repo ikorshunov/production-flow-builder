@@ -3,7 +3,7 @@ import { HiMiniInboxArrowDown } from 'react-icons/hi2';
 import { ResourceHandle } from '../handles/ResourceHandle';
 import { NodeLayout } from './NodeLayout';
 
-export const Store = () => {
+export const DefaultStore = () => {
     return (
         <NodeLayout
             name="Store"

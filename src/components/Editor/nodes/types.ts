@@ -1,18 +1,25 @@
 import { Node } from '@xyflow/react';
 
-export type CoalPowerPlantNode = Node<{ power: number }, 'coalPowerPlant'>;
-export type WindPowerPlantNode = Node<{ power: number }, 'windPowerPlant'>;
-export type CoalSupplierNode = Node<{ supplyRate: number }, 'coalSupplier'>;
-export type RubberSupplierNode = Node<{ supplyRate: number }, 'rubberSupplier'>;
-export type PaintSupplierNode = Node<{ supplyRate: number }, 'paintSupplier'>;
-export type DuckFactoryNode = Node<{ productionRate: number }, 'duckFactory'>;
-export type StoreNode = Node<{ stock: Record<'rubberDuck', number> }, 'store'>;
+import { ResourceType } from '../types';
 
+export type SupplierNode<T extends string> = Node<{ supplyRate: number }, T>;
+export type PowerPlantNode<T extends string> = Node<{ power: number }, T>;
+export type FactoryNode<T extends string> = Node<{ productionRate: number }, T>;
+export type StoreNode<T extends string, S extends string> = Node<
+    { stock: Record<S, number> },
+    T
+>;
+
+export type SupplierNodeType = SupplierNode<
+    'coalSupplier' | 'rubberSupplier' | 'paintSupplier'
+>;
+export type PowerPlantNodeType = PowerPlantNode<
+    'coalPowerPlant' | 'windPowerPlant'
+>;
+export type FactoryNodeType = FactoryNode<'duckFactory'>;
+export type StoreNodeType = StoreNode<'defaultStore', ResourceType>;
 export type NodeType =
-    | CoalPowerPlantNode
-    | WindPowerPlantNode
-    | CoalSupplierNode
-    | RubberSupplierNode
-    | PaintSupplierNode
-    | DuckFactoryNode
-    | StoreNode;
+    | SupplierNodeType
+    | PowerPlantNodeType
+    | FactoryNodeType
+    | StoreNodeType;

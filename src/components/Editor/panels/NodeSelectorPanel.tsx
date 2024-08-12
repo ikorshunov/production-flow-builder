@@ -8,26 +8,67 @@ import {
 import { HiMiniInboxArrowDown } from 'react-icons/hi2';
 import { SiGumtree } from 'react-icons/si';
 
-import { ToolbarNodeLayout } from '../nodes/ToolbarNodeLayout';
+import { ToolbarNode } from '../nodes/ToolbarNode';
 import { ToolbarLayout } from './ToolbarLayout';
+import { DragEvent, useCallback } from 'react';
+import { NodeType } from '../nodes/types';
 
 export const NodeSelectorPanel = () => {
+    const getOnDragStart = useCallback(
+        (nodeType: Exclude<NodeType['type'], undefined>) => {
+            return (event: DragEvent) => {
+                event.dataTransfer.setData('application/reactflow', nodeType);
+                event.dataTransfer.effectAllowed = 'move';
+            };
+        },
+        []
+    );
     return (
         <Panel className="flex gap-5">
             <ToolbarLayout category="supplier">
-                <ToolbarNodeLayout icon={GiCoalWagon} />
-                <ToolbarNodeLayout icon={SiGumtree} iconColor="#fff" />
-                <ToolbarNodeLayout icon={GiPaintBucket} iconColor="#8200ff" />
+                <ToolbarNode
+                    draggable
+                    onDragStart={getOnDragStart('coalSupplier')}
+                    icon={GiCoalWagon}
+                />
+                <ToolbarNode
+                    draggable
+                    onDragStart={getOnDragStart('rubberSupplier')}
+                    icon={SiGumtree}
+                    iconColor="#fff"
+                />
+                <ToolbarNode
+                    draggable
+                    onDragStart={getOnDragStart('paintSupplier')}
+                    icon={GiPaintBucket}
+                    iconColor="#8200ff"
+                />
             </ToolbarLayout>
             <ToolbarLayout category="power">
-                <ToolbarNodeLayout icon={GiCoalWagon} />
-                <ToolbarNodeLayout icon={GiWindTurbine} iconColor="#0078ff" />
+                <ToolbarNode
+                    draggable
+                    onDragStart={getOnDragStart('coalPowerPlant')}
+                    icon={GiCoalWagon}
+                />
+                <ToolbarNode
+                    draggable
+                    onDragStart={getOnDragStart('windPowerPlant')}
+                    icon={GiWindTurbine}
+                    iconColor="#0078ff"
+                />
             </ToolbarLayout>
             <ToolbarLayout category="factory">
-                <ToolbarNodeLayout icon={GiPlasticDuck} iconColor="#ffeb00" />
+                <ToolbarNode
+                    draggable
+                    onDragStart={getOnDragStart('duckFactory')}
+                    icon={GiPlasticDuck}
+                    iconColor="#ffeb00"
+                />
             </ToolbarLayout>
             <ToolbarLayout category="store">
-                <ToolbarNodeLayout
+                <ToolbarNode
+                    draggable
+                    onDragStart={getOnDragStart('defaultStore')}
                     icon={HiMiniInboxArrowDown}
                     iconColor="#fff"
                 />

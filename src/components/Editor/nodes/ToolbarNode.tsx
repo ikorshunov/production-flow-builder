@@ -8,7 +8,7 @@ type ToolbarNodeLayoutProps = HTMLAttributes<HTMLDivElement> & {
     iconColor?: HexColor;
 };
 
-export const ToolbarNodeLayout = (props: ToolbarNodeLayoutProps) => {
+export const ToolbarNode = (props: ToolbarNodeLayoutProps) => {
     const { icon: Icon, iconColor = '#000', ...restProps } = props;
 
     return (
