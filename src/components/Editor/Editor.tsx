@@ -5,15 +5,21 @@ import {
     Background,
     Controls,
     Edge,
+    IsValidConnection,
     OnConnect,
     OnEdgesChange,
     OnNodesChange,
     ReactFlow,
 } from '@xyflow/react';
+import { useCallback, useState } from 'react';
 
 import { nodeTypes } from './nodes/nodeTypes';
-import { NodeType } from './nodes/types';
-import { useCallback, useState } from 'react';
+import {
+    isSourceHandle,
+    isTargetHandle,
+    NodeType,
+    ResourceType,
+} from './nodes/types';
 
 const initialNodes: NodeType[] = [
     {
@@ -79,6 +85,30 @@ export const Editor = () => {
         []
     );
 
+    const validateNewConnection: IsValidConnection = useCallback(
+        (connection) => {
+            const { sourceHandle, targetHandle } = connection;
+            if (
+                !isSourceHandle(sourceHandle) ||
+                !isTargetHandle(targetHandle)
+            ) {
+                // Don't allow connections between handles of unspecified/unknown resources.
+                return false;
+            }
+            const sourceResource = sourceHandle.split('-')[0] as ResourceType;
+            const targetResource = targetHandle.split('-')[0] as ResourceType;
+
+            if (targetResource === 'any') {
+                // Allow any node to connect to an "any" resource target handle.
+                return true;
+            } else {
+                // Otherwise, allow connections only between handles of the same resource type.
+                return sourceResource === targetResource;
+            }
+        },
+        []
+    );
+
     return (
         <ReactFlow<NodeType>
             nodes={nodes}
@@ -86,6 +116,7 @@ export const Editor = () => {
             onNodesChange={handleNodesChange}
             onEdgesChange={handleEdgesChange}
             onConnect={handleConnect}
+            isValidConnection={validateNewConnection}
             nodeTypes={nodeTypes}
             fitView
         >
