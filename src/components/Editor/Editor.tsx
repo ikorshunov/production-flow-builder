@@ -13,13 +13,10 @@ import {
 } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 
+import { isSourceHandle, isTargetHandle } from './handles/helpers';
 import { nodeTypes } from './nodes/nodeTypes';
-import {
-    isSourceHandle,
-    isTargetHandle,
-    NodeType,
-    ResourceType,
-} from './nodes/types';
+import { NodeType } from './nodes/types';
+import { ResourceType } from './types';
 
 const initialNodes: NodeType[] = [
     {

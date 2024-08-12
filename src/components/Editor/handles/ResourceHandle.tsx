@@ -3,13 +3,11 @@ import {
     Handle as ReactFlowHandle,
     HandleProps as ReactFlowHandleProps,
 } from '@xyflow/react';
-import { GiCoalWagon, GiPaintBucket, GiPlasticDuck } from 'react-icons/gi';
-import { HiMiniInboxArrowDown } from 'react-icons/hi2';
-import { ImPower } from 'react-icons/im';
-import { SiGumtree } from 'react-icons/si';
 import classNames from 'classnames';
 
-import { HandleId, ResourceType } from './types';
+import { HandleId } from './types';
+import { HandleIcon } from './HandleIcon';
+import { ResourceType } from '../types';
 
 type ResourceHandleProps = Omit<ReactFlowHandleProps, 'id' | 'position'> & {
     resourceType: ResourceType;
@@ -37,23 +35,6 @@ function getHandleClassName(params: {
     );
 }
 
-function getHandleIcon(params: { resourceType: ResourceType }) {
-    switch (params.resourceType) {
-        case 'coal':
-            return <GiCoalWagon color="black" />;
-        case 'paint':
-            return <GiPaintBucket color="#8200ff" />;
-        case 'power':
-            return <ImPower color="#ffda00" />;
-        case 'rubber':
-            return <SiGumtree color="white" />;
-        case 'rubberDuck':
-            return <GiPlasticDuck color="#ffeb00" />;
-        case 'any':
-            return <HiMiniInboxArrowDown color="white" />;
-    }
-}
-
 export const ResourceHandle = (props: ResourceHandleProps) => {
     const {
         size = 'md',
@@ -65,7 +46,6 @@ export const ResourceHandle = (props: ResourceHandleProps) => {
     const className = getHandleClassName({ size, customClassName });
     const position = type === 'source' ? Position.Right : Position.Left;
     const id: HandleId = `${resourceType}-${type}`;
-    const icon = getHandleIcon({ resourceType });
 
     return (
         <ReactFlowHandle
@@ -76,7 +56,7 @@ export const ResourceHandle = (props: ResourceHandleProps) => {
             className={className}
         >
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-md pointer-events-none">
-                {icon}
+                <HandleIcon name={resourceType} />
             </div>
         </ReactFlowHandle>
     );

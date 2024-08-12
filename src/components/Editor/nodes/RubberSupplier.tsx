@@ -1,12 +1,13 @@
 import { SiGumtree } from 'react-icons/si';
 
 import { NodeLayout } from './NodeLayout';
-import { ResourceHandle } from './ResourceHandle';
+import { ResourceHandle } from '../handles/ResourceHandle';
 
 export const RubberSupplier = () => {
     return (
         <NodeLayout
             name="Rubber supplier"
+            category="supplier"
             mainIcon={SiGumtree}
             mainIconColor="#fff"
         >
