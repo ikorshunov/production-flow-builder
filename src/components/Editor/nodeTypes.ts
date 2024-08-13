@@ -1,19 +1,13 @@
 import { NodeTypes } from '@xyflow/react';
 
-import { CoalPowerPlant } from './nodes/CoalPowerPlant';
-import { CoalSupplier } from './nodes/CoalSupplier';
-import { DuckFactory } from './nodes/DuckFactory';
-import { DefaultStore } from './nodes/DefaultStore';
-import { WindPowerPlant } from './nodes/WindPowerPlant';
-import { RubberSupplier } from './nodes/RubberSupplier';
-import { PaintSupplier } from './nodes/PaintSupplier';
+import { Supplier } from './nodes/Supplier';
+import { PowerPlant } from './nodes/PowerPlant';
+import { Factory } from './nodes/Factory';
+import { Store } from './nodes/Store';
 
 export const nodeTypes: NodeTypes = {
-    coalPowerPlant: CoalPowerPlant,
-    windPowerPlant: WindPowerPlant,
-    coalSupplier: CoalSupplier,
-    rubberSupplier: RubberSupplier,
-    paintSupplier: PaintSupplier,
-    duckFactory: DuckFactory,
-    defaultStore: DefaultStore,
+    supplier: Supplier,
+    power: PowerPlant,
+    factory: Factory,
+    store: Store,
 };

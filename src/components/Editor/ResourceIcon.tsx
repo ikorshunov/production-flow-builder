@@ -1,17 +1,23 @@
-import { GiCoalWagon, GiPaintBucket, GiPlasticDuck } from 'react-icons/gi';
+import { IconBaseProps, IconType } from 'react-icons';
+import {
+    GiCoalWagon,
+    GiPaintBucket,
+    GiPlasticDuck,
+    GiWindTurbine,
+} from 'react-icons/gi';
 import { HiMiniInboxArrowDown } from 'react-icons/hi2';
 import { ImPower } from 'react-icons/im';
 import { SiGumtree } from 'react-icons/si';
-import { IconBaseProps, IconType } from 'react-icons';
+import { GrStatusUnknown } from 'react-icons/gr';
 
 import { HexColor } from 'src/types';
-import { ResourceType } from '../types';
+import { ResourceType } from './types';
 
-type HandleIconProps = IconBaseProps & {
+type ResourceIconProps = IconBaseProps & {
     name: ResourceType;
 };
 
-export const HandleIcon = (props: HandleIconProps) => {
+export const ResourceIcon = (props: ResourceIconProps) => {
     let IconComponent: IconType;
     let iconColor: HexColor;
 
@@ -19,6 +25,10 @@ export const HandleIcon = (props: HandleIconProps) => {
         case 'coal':
             IconComponent = GiCoalWagon;
             iconColor = '#000';
+            break;
+        case 'wind':
+            IconComponent = GiWindTurbine;
+            iconColor = '#0078ff';
             break;
         case 'paint':
             IconComponent = GiPaintBucket;
@@ -38,6 +48,10 @@ export const HandleIcon = (props: HandleIconProps) => {
             break;
         case 'any':
             IconComponent = HiMiniInboxArrowDown;
+            iconColor = '#fff';
+            break;
+        case 'unknown':
+            IconComponent = GrStatusUnknown;
             iconColor = '#fff';
             break;
     }

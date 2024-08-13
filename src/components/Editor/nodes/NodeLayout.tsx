@@ -1,19 +1,17 @@
 import { CSSProperties, PropsWithChildren, useMemo } from 'react';
-import { IconType } from 'react-icons';
 
-import { HexColor } from 'src/types';
 import { categoryLayoutConfigMap } from '../constants';
-import { NodeCategory } from '../types';
+import { NodeCategory, ResourceType } from '../types';
+import { ResourceIcon } from '../ResourceIcon';
 
 type NodeLayoutProps = PropsWithChildren<{
     name: string;
     category: NodeCategory;
-    icon: IconType;
-    iconColor?: HexColor;
+    iconName: ResourceType;
 }>;
 
 export const NodeLayout = (props: NodeLayoutProps) => {
-    const { children, name, category, icon: Icon, iconColor = '#000' } = props;
+    const { children, name, category, iconName } = props;
 
     const {
         nodeColor,
@@ -34,14 +32,20 @@ export const NodeLayout = (props: NodeLayoutProps) => {
             style={nodeStyle}
         >
             <div>
-                <Icon className="drop-shadow-md" color={iconColor} size="40" />
+                <ResourceIcon
+                    name={iconName}
+                    size="40"
+                    className="drop-shadow-md"
+                />
                 <CategoryIcon
                     className="absolute left-1/2 -translate-x-1/2 top-2 drop-shadow-md"
                     color={categoryIconColor}
                     size="15"
                 />
             </div>
-            <div className="text-xs text-center max-w-20">{name}</div>
+            <div className="text-xs text-center max-w-20 capitalize">
+                {name}
+            </div>
             {children}
         </div>
     );

@@ -14,12 +14,11 @@ import {
     useReactFlow,
 } from '@xyflow/react';
 
-import { isSourceHandle, isTargetHandle } from './handles/helpers';
+import { NodeSelectorPanel } from './panels/NodeSelectorPanel';
+import { isSourceHandle, isTargetHandle, createNewNode } from './helpers';
 import { nodeTypes } from './nodeTypes';
 import { NodeType } from './nodes/types';
 import { ResourceType } from './types';
-import { NodeSelectorPanel } from './panels/NodeSelectorPanel';
-import { createNewNode } from './helpers';
 
 export const Editor = () => {
     const [nodes, setNodes] = useState<NodeType[]>([]);

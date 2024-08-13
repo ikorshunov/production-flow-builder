@@ -7,6 +7,13 @@ import { IoStorefrontSharp } from 'react-icons/io5';
 import { HexColor } from 'src/types';
 import { NodeCategory } from './types';
 
+export const categories: NodeCategory[] = [
+    'supplier',
+    'power',
+    'factory',
+    'store',
+];
+
 export const categoryLayoutConfigMap: Record<
     NodeCategory,
     {
@@ -41,3 +48,10 @@ export const categoryLayoutConfigMap: Record<
         iconColor: '#dc029b',
     },
 };
+
+export const categoryNodeOptions = {
+    supplier: ['coal', 'paint', 'rubber'],
+    power: ['coal', 'wind'],
+    factory: ['rubberDuck'],
+    store: ['any'],
+} as const;

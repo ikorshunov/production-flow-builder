@@ -5,9 +5,8 @@ import {
 } from '@xyflow/react';
 import classNames from 'classnames';
 
-import { ResourceType } from '../types';
-import { HandleId } from './types';
-import { HandleIcon } from './HandleIcon';
+import { ResourceIcon } from './ResourceIcon';
+import { ResourceType, HandleId } from './types';
 
 type ResourceHandleProps = Omit<ReactFlowHandleProps, 'id' | 'position'> & {
     resourceType: ResourceType;
@@ -53,7 +52,7 @@ export const ResourceHandle = (props: ResourceHandleProps) => {
             className={className}
         >
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-md pointer-events-none">
-                <HandleIcon name={resourceType} />
+                <ResourceIcon name={resourceType} />
             </div>
         </ReactFlowHandle>
     );
