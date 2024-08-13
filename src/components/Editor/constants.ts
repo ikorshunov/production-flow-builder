@@ -7,6 +7,8 @@ import { IoStorefrontSharp } from 'react-icons/io5';
 import { HexColor } from 'src/types';
 import { NodeCategory } from './types';
 
+export const PROJECT_NAME = 'productionFlowBuilder';
+
 export const categories: NodeCategory[] = [
     'supplier',
     'power',
