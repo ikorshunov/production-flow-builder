@@ -1,24 +1,11 @@
-import { useCallback, useContext } from 'react';
-
 import { NodeStateMap } from '../nodes/types';
 import { NodeCategory } from '../types';
-import { Context } from './EditorContext';
+import { useEditorContext } from './useEditorContext';
 
-export const useNodeState = <T extends NodeCategory>(params: {
-    nodeId: string;
-}) => {
-    const { nodeId } = params;
-    const {
-        model: { nodeState },
-        api: { setNodeState },
-    } = useContext(Context);
-
-    const updateNodeState = useCallback<typeof setNodeState>(setNodeState, [
-        setNodeState,
-    ]);
-
-    return [nodeState[nodeId]?.state, updateNodeState] as [
-        NodeStateMap[T] | undefined,
-        typeof setNodeState,
-    ];
+export const useNodeState = <T extends NodeCategory>(nodeId: string) => {
+    const context = useEditorContext();
+    const nodeStateEntry = context.model.nodeState[nodeId];
+    return nodeStateEntry
+        ? (nodeStateEntry.state as NodeStateMap[T])
+        : undefined;
 };

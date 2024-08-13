@@ -1,12 +1,19 @@
-import { createContext, PropsWithChildren, useMemo } from 'react';
+import {
+    createContext,
+    PropsWithChildren,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { ImSpinner9 } from 'react-icons/im';
 
-import { useModelQuery } from './useModelQuery';
-import { useNodeStateMutation } from './useNodeStateMutation';
-import { useEditorStateMutation } from './useEditorStateMutation';
+import { getModel } from 'src/api/getModel';
+import { NodeType, NodeStateType } from '../nodes/types';
+import { PROJECT_NAME } from '../constants';
 import { initialContextValue } from './constants';
-import { EditorContextValue } from './types';
-import { useCreateNodeMutation } from './useCreateNodeMutation';
+import { EditorContextValue, EditorState, ModelState } from './types';
+import { updateModel } from 'src/api/updateModal';
 
 type EditorContextProps = PropsWithChildren<{
     modelId: string;
@@ -16,28 +23,88 @@ export const Context = createContext<EditorContextValue>(initialContextValue);
 
 export const EditorContext = (props: EditorContextProps) => {
     const { children, modelId } = props;
-    const { data: model } = useModelQuery(modelId);
-    const updateNodeStateMutation = useNodeStateMutation(modelId);
-    const updateEditorStateMutation = useEditorStateMutation(modelId);
-    const createNodeMutation = useCreateNodeMutation(modelId);
+    const { data } = useQuery({
+        queryKey: [PROJECT_NAME, 'model', modelId],
+        queryFn: () => getModel(modelId),
+    });
+    const updateModelMutation = useMutation({
+        mutationFn: (model: ModelState) => updateModel(model),
+    });
+    const [state, setState] = useState<ModelState>(
+        data || initialContextValue.model
+    );
+
+    useEffect(() => {
+        if (data) {
+            setState(data);
+        }
+    }, [data]);
 
     const contextValue: EditorContextValue = useMemo(() => {
         return {
-            model: model || initialContextValue.model,
+            model: state,
             api: {
-                setNodeState: updateNodeStateMutation.mutate,
-                setEditorState: updateEditorStateMutation.mutate,
-                createNode: createNodeMutation.mutate,
+                setNodeState: (params: {
+                    id?: string;
+                    node: NodeType;
+                    nodeState: NodeStateType;
+                }) => {
+                    const { node, nodeState, id } = params;
+
+                    setState((prevState) => {
+                        if (!node.type) {
+                            return prevState;
+                        }
+
+                        const prevNodes = prevState.editorState.nodes;
+                        let newNodes = prevNodes;
+
+                        // editing existing node
+                        if (id) {
+                            const filteredNodes = prevNodes.filter(
+                                (node) => node.id !== id
+                            );
+                            newNodes = [...filteredNodes, node];
+                        } else {
+                            // adding new node
+                            newNodes = [...prevNodes, node];
+                        }
+
+                        const updatedModel = {
+                            ...(prevState || initialContextValue.model),
+                            editorState: {
+                                ...prevState.editorState,
+                                nodes: newNodes,
+                            },
+                            nodeState: {
+                                ...prevState.nodeState,
+                                [node.id]: {
+                                    id: node.id,
+                                    type: node.type,
+                                    state: nodeState,
+                                },
+                            },
+                        };
+
+                        updateModelMutation.mutate(updatedModel);
+                        return updatedModel;
+                    });
+                },
+                setEditorState: (params: { state: EditorState }) => {
+                    setState((prevState) => {
+                        const updatedModel = {
+                            ...prevState,
+                            editorState: params.state,
+                        };
+                        updateModelMutation.mutate(updatedModel);
+                        return updatedModel;
+                    });
+                },
             },
         };
-    }, [
-        createNodeMutation.mutate,
-        model,
-        updateEditorStateMutation.mutate,
-        updateNodeStateMutation.mutate,
-    ]);
+    }, [state, updateModelMutation]);
 
-    if (!model) {
+    if (!data) {
         return (
             <div className="w-screen h-screen flex items-center justify-center">
                 <ImSpinner9

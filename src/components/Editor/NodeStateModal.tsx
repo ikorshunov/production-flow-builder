@@ -2,11 +2,12 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import { NodeCategory } from './types';
-import { useNodeState } from './state/useNodeState';
 import { categoryLayoutConfigMap, categoryNodeOptions } from './constants';
 import { ResourceIcon } from './ResourceIcon';
 import { useEffect, useState } from 'react';
 import { NodeStateType } from './nodes/types';
+import { useNodeState } from './state/useNodeState';
+import { useEditorContext } from './state/useEditorContext';
 
 type NodeStateModalProps = Pick<Dialog.DialogProps, 'open' | 'onOpenChange'> & {
     nodeId: string;
@@ -18,7 +19,11 @@ export const NodeStateModal = (props: NodeStateModalProps) => {
     const { open, onOpenChange, nodeId, nodeCategory } = props;
     const categoryLayoutConfig = categoryLayoutConfigMap[nodeCategory];
     const options = categoryNodeOptions[nodeCategory];
-    const [nodeState, updateNodeState] = useNodeState({ nodeId });
+    const nodeState = useNodeState(nodeId);
+    const {
+        model: { editorState },
+        api: { setNodeState },
+    } = useEditorContext();
     const [state, setState] = useState(nodeState);
 
     useEffect(() => {
@@ -48,7 +53,7 @@ export const NodeStateModal = (props: NodeStateModalProps) => {
                             return (
                                 <button
                                     key={resource}
-                                    className={`p-3 rounded-md cursor-pointer border-2 ${isSelected ? 'border-black' : 'border-transparent'}`}
+                                    className={`p-3 rounded-md cursor-pointer border-2 hover:shadow-lg hover:border-black ${isSelected ? 'border-black' : 'border-transparent'}`}
                                     onClick={() => {
                                         setState((prevState) => {
                                             if (!prevState) {
@@ -62,7 +67,11 @@ export const NodeStateModal = (props: NodeStateModalProps) => {
                                         });
                                     }}
                                 >
-                                    <ResourceIcon name={resource} size="50" />
+                                    <ResourceIcon
+                                        className="drop-shadow-md"
+                                        name={resource}
+                                        size="50"
+                                    />
                                 </button>
                             );
                         })}
@@ -76,9 +85,12 @@ export const NodeStateModal = (props: NodeStateModalProps) => {
                         <Dialog.Close asChild>
                             <button
                                 onClick={() => {
-                                    updateNodeState({
+                                    setNodeState({
                                         id: nodeId,
-                                        state: state as NodeStateType,
+                                        node: editorState.nodes.find(
+                                            (node) => node.id === nodeId
+                                        )!,
+                                        nodeState: state as NodeStateType,
                                     });
                                     onOpenChange?.(false);
                                 }}

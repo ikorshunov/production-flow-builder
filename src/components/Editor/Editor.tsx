@@ -24,9 +24,8 @@ import {
 import { nodeTypes } from './nodeTypes';
 import { NodeType } from './nodes/types';
 import { NodeCategory, ResourceType } from './types';
-import { useEditorState } from './state/useEditorState';
-import { useCreateNode } from './state/useCreateNode';
 import { NodeStateModal } from './NodeStateModal';
+import { useEditorContext } from './state/useEditorContext';
 
 export const Editor = () => {
     const [editedNode, setEditedNode] = useState<{
@@ -39,51 +38,48 @@ export const Editor = () => {
         }
     }, []);
 
-    const [editorState, updateEditorState] = useEditorState();
-    const createNode = useCreateNode();
-    const { nodes, edges } = editorState;
+    const {
+        model: {
+            editorState: { nodes, edges },
+        },
+        api: { setEditorState, setNodeState },
+    } = useEditorContext();
 
     const handleNodesChange: OnNodesChange<NodeType> = useCallback(
         (changes) => {
-            const hasDraggingInProgress = changes.some(
-                (change) => change.type === 'position' && change.dragging
-            );
-
-            const updatedNodes = applyNodeChanges(changes, editorState.nodes);
-            updateEditorState({
+            const updatedNodes = applyNodeChanges(changes, nodes);
+            setEditorState({
                 state: {
-                    ...editorState,
                     nodes: updatedNodes,
+                    edges,
                 },
-                // Avoid redundant updates while dragging.
-                isLocal: hasDraggingInProgress,
             });
         },
-        [editorState, updateEditorState]
+        [edges, nodes, setEditorState]
     );
     const handleEdgesChange: OnEdgesChange = useCallback(
         (changes) => {
-            const updatedEdges = applyEdgeChanges(changes, editorState.edges);
-            updateEditorState({
+            const updatedEdges = applyEdgeChanges(changes, edges);
+            setEditorState({
                 state: {
-                    ...editorState,
+                    nodes,
                     edges: updatedEdges,
                 },
             });
         },
-        [editorState, updateEditorState]
+        [edges, nodes, setEditorState]
     );
     const handleConnect: OnConnect = useCallback(
         (connection) => {
-            const updatedEdges = addEdge(connection, editorState.edges);
-            updateEditorState({
+            const updatedEdges = addEdge(connection, edges);
+            setEditorState({
                 state: {
-                    ...editorState,
+                    nodes,
                     edges: updatedEdges,
                 },
             });
         },
-        [editorState, updateEditorState]
+        [edges, nodes, setEditorState]
     );
 
     const handleNodeClick = useCallback<NodeMouseHandler>((_event, node) => {
@@ -119,7 +115,13 @@ export const Editor = () => {
 
     // Made with drag & drop feature tutorial: https://reactflow.dev/examples/interaction/drag-and-drop
     const { screenToFlowPosition } = useReactFlow();
-
+    const handleDragStart = useCallback(
+        (event: DragEvent, nodeType: Exclude<NodeType['type'], undefined>) => {
+            event.dataTransfer.setData('application/reactflow', nodeType);
+            event.dataTransfer.effectAllowed = 'move';
+        },
+        []
+    );
     const handleDragOver = useCallback((event: DragEvent) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
@@ -143,9 +145,9 @@ export const Editor = () => {
             });
             const newNode = createNewNode(type, position);
             const newNodeState = createNewNodeState(type);
-            createNode({ node: newNode, nodeState: newNodeState });
+            setNodeState({ node: newNode, nodeState: newNodeState });
         },
-        [createNode, screenToFlowPosition]
+        [screenToFlowPosition, setNodeState]
     );
 
     return (
@@ -162,7 +164,7 @@ export const Editor = () => {
                 isValidConnection={validateNewConnection}
                 nodeTypes={nodeTypes}
             >
-                <NodeSelectorPanel />
+                <NodeSelectorPanel onDragStart={handleDragStart} />
                 <Background />
                 <Controls />
             </ReactFlow>

@@ -1,6 +1,6 @@
 import { Edge } from '@xyflow/react';
 
-import { NodeStateMap, NodeStateType, NodeType } from '../nodes/types';
+import { NodeStateMap, NodeType } from '../nodes/types';
 import { NodeCategory } from '../types';
 
 export type EditorState = {
@@ -27,16 +27,10 @@ export type EditorContextValue = {
     model: ModelState;
     api: {
         setNodeState: <T extends NodeCategory>(params: {
-            id: string;
-            state: NodeStateMap[T];
-        }) => void;
-        setEditorState: (params: {
-            state: EditorState;
-            isLocal?: boolean;
-        }) => void;
-        createNode: (params: {
+            id?: string;
             node: NodeType;
-            nodeState: NodeStateType;
+            nodeState: NodeStateMap[T];
         }) => void;
+        setEditorState: (params: { state: EditorState }) => void;
     };
 };

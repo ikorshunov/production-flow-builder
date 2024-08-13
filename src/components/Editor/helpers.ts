@@ -32,7 +32,7 @@ export const createNewNode = (
     position: { x: number; y: number }
 ): NodeType => {
     const nodeTemplate = {
-        id: '',
+        id: crypto.randomUUID(),
         position,
     };
 
