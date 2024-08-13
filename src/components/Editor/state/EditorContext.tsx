@@ -9,7 +9,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { ImSpinner9 } from 'react-icons/im';
 
 import { getModel } from 'src/api/getModel';
-import { updateModel } from 'src/api/updateModal';
+import { updateModel } from 'src/api/updateModel';
 import { initialContextValue, PROJECT_NAME } from '../constants';
 import {
     EditorContextValue,
