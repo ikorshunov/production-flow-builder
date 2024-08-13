@@ -1,9 +1,9 @@
 import { DragEvent, useCallback } from 'react';
 import { Panel } from '@xyflow/react';
 
-import { ToolbarNode } from '../nodes/ToolbarNode';
-import { NodeType } from '../nodes/types';
-import { categories } from '../constants';
+import { ToolbarNode } from './nodes/ToolbarNode';
+import { NodeType } from './nodes/types';
+import { categories } from './constants';
 
 type NodeSelectorPanelProps = {
     onDragStart: (
@@ -23,7 +23,7 @@ export const NodeSelectorPanel = (props: NodeSelectorPanelProps) => {
         [onDragStart]
     );
     return (
-        <Panel position="top-left" className="flex flex-col gap-2 select-none">
+        <Panel position="top-right" className="flex flex-col gap-2 select-none">
             <h1>Pick a node:</h1>
             <div className="flex gap-4">
                 {categories.map((categoryName) => {

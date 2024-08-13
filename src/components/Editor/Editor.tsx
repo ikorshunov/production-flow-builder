@@ -10,11 +10,13 @@ import {
     OnConnect,
     OnEdgesChange,
     OnNodesChange,
+    Panel,
     ReactFlow,
     useReactFlow,
 } from '@xyflow/react';
+import { AiOutlineRollback } from 'react-icons/ai';
 
-import { NodeSelectorPanel } from './panels/NodeSelectorPanel';
+import { NodeSelectorPanel } from './NodeSelectorPanel';
 import {
     isSourceHandle,
     isTargetHandle,
@@ -164,6 +166,18 @@ export const Editor = () => {
                 isValidConnection={validateNewConnection}
                 nodeTypes={nodeTypes}
             >
+                <Panel
+                    position="top-left"
+                    className="flex flex-col shrink-0 gap-2"
+                >
+                    <div>Back to models list</div>
+                    <a
+                        href="/"
+                        className="bg-slate-300 shadow-sm rounded-md w-[60px] h-[60px]"
+                    >
+                        <AiOutlineRollback size="60" />
+                    </a>
+                </Panel>
                 <NodeSelectorPanel onDragStart={handleDragStart} />
                 <Background />
                 <Controls />

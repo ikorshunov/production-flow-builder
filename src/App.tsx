@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ReactFlowProvider } from '@xyflow/react';
 import { useQuery } from '@tanstack/react-query';
 import { ImSpinner9 } from 'react-icons/im';
@@ -10,11 +10,20 @@ import { PROJECT_NAME } from './components/Editor/constants';
 import { ModelList } from './components/ModelList';
 
 export const App = () => {
-    const [selectedModelId, setSelectedModelId] = useState<string>();
+    const hash = location.hash;
+    const modelId = hash ? hash.substring(1) : undefined;
+    const [selectedModelId, setSelectedModelId] = useState<string | undefined>(
+        modelId
+    );
     const { data: modelList } = useQuery({
         queryKey: [PROJECT_NAME, 'modelList'],
         queryFn: () => getModelList(),
     });
+
+    const handleModelSelect = useCallback((modelId: string) => {
+        history.pushState(null, '', `#${modelId}`);
+        setSelectedModelId(modelId);
+    }, []);
 
     if (!selectedModelId) {
         if (!modelList) {
@@ -34,7 +43,7 @@ export const App = () => {
                 <h1 className="text-[2em]">
                     Welcome to Production Flow Builder
                 </h1>
-                <ModelList items={modelList} onSelect={setSelectedModelId} />
+                <ModelList items={modelList} onSelect={handleModelSelect} />
             </div>
         );
     }
