@@ -2,9 +2,9 @@ import { NodeProps } from '@xyflow/react';
 
 import { ResourceHandle } from '../ResourceHandle';
 import { NodeLayout } from './NodeLayout';
-import { FactoryNode, StatefulFactoryNode } from './types';
+import { FactoryNode, NodeStateMap } from './types';
 
-type FactoryProps = NodeProps<FactoryNode> & StatefulFactoryNode['state'];
+type FactoryProps = NodeProps<FactoryNode> & NodeStateMap['factory'];
 
 export const Factory = (props: FactoryProps) => {
     const { product = 'unknown' } = props;

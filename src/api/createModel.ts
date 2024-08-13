@@ -6,8 +6,11 @@ export const createModel = (): Promise<ModelState> => {
     const newModelId = crypto.randomUUID();
     const newModel: ModelState = {
         id: newModelId,
-        nodes: [],
-        edges: [],
+        editorState: {
+            nodes: [],
+            edges: [],
+        },
+        nodeState: {},
     };
     const newData = {
         ...data,

@@ -2,9 +2,9 @@ import { NodeProps } from '@xyflow/react';
 
 import { ResourceHandle } from '../ResourceHandle';
 import { NodeLayout } from './NodeLayout';
-import { StatefulSupplierNode, SupplierNode } from './types';
+import { NodeStateMap, SupplierNode } from './types';
 
-type SupplierProps = NodeProps<SupplierNode> & StatefulSupplierNode['state'];
+type SupplierProps = NodeProps<SupplierNode> & NodeStateMap['supplier'];
 
 export const Supplier = (props: SupplierProps) => {
     const { resource = 'unknown' } = props;

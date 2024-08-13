@@ -1,5 +1,7 @@
+import { ModelState } from 'src/components/Editor/state/types';
 import { PROJECT_NAME } from '../components/Editor/constants';
-import { State } from '../components/Editor/state/types';
+
+export type State = Record<string, ModelState>;
 
 const STORAGE_KEY = `${PROJECT_NAME}Data`;
 
@@ -17,7 +19,7 @@ const withDelay = <T>(func: () => T) => {
                 const result = func();
                 resolve(result);
             },
-            getRandomInt(0, 3000)
+            getRandomInt(0, 2000)
         );
     });
 };

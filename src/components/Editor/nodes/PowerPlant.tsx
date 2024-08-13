@@ -2,10 +2,9 @@ import { NodeProps } from '@xyflow/react';
 
 import { ResourceHandle } from '../ResourceHandle';
 import { NodeLayout } from './NodeLayout';
-import { PowerPlantNode, StatefulPowerPlantNode } from './types';
+import { NodeStateMap, PowerPlantNode } from './types';
 
-type PowerPlantProps = NodeProps<PowerPlantNode> &
-    StatefulPowerPlantNode['state'];
+type PowerPlantProps = NodeProps<PowerPlantNode> & NodeStateMap['power'];
 
 export const PowerPlant = (props: PowerPlantProps) => {
     const { source = 'unknown' } = props;
