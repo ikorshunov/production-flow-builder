@@ -6,6 +6,7 @@ import { useNodeStateMutation } from './useNodeStateMutation';
 import { useEditorStateMutation } from './useEditorStateMutation';
 import { initialContextValue } from './constants';
 import { EditorContextValue } from './types';
+import { useCreateNodeMutation } from './useCreateNodeMutation';
 
 type EditorContextProps = PropsWithChildren<{
     modelId: string;
@@ -18,6 +19,7 @@ export const EditorContext = (props: EditorContextProps) => {
     const { data: model } = useModelQuery(modelId);
     const updateNodeStateMutation = useNodeStateMutation(modelId);
     const updateEditorStateMutation = useEditorStateMutation(modelId);
+    const createNodeMutation = useCreateNodeMutation(modelId);
 
     const contextValue: EditorContextValue = useMemo(() => {
         return {
@@ -25,9 +27,11 @@ export const EditorContext = (props: EditorContextProps) => {
             api: {
                 setNodeState: updateNodeStateMutation.mutate,
                 setEditorState: updateEditorStateMutation.mutate,
+                createNode: createNodeMutation.mutate,
             },
         };
     }, [
+        createNodeMutation.mutate,
         model,
         updateEditorStateMutation.mutate,
         updateNodeStateMutation.mutate,

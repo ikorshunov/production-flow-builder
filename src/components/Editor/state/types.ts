@@ -30,6 +30,13 @@ export type EditorContextValue = {
             id: string;
             state: NodeStateMap[T];
         }) => void;
-        setEditorState: (state: EditorState) => void;
+        setEditorState: (params: {
+            state: EditorState;
+            isLocal?: boolean;
+        }) => void;
+        createNode: (params: {
+            node: NodeType;
+            nodeState: NodeStateType;
+        }) => void;
     };
 };

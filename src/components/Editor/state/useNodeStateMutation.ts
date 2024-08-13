@@ -18,7 +18,12 @@ export const useNodeStateMutation = (modelId: string) => {
         onMutate: ({ id, state: newState }) => {
             const prevModel =
                 queryClient.getQueryData<ModelState>(modelQueryKey);
-            const prevNodeState = prevModel!.nodeState[id];
+
+            if (!prevModel) {
+                return;
+            }
+
+            const prevNodeState = prevModel.nodeState[id];
             queryClient.setQueryData<ModelState>(modelQueryKey, (prevModel) => {
                 const { nodeState, ...rest } =
                     prevModel || initialContextValue.model;

@@ -19,7 +19,7 @@ const withDelay = <T>(func: () => T) => {
                 const result = func();
                 resolve(result);
             },
-            getRandomInt(0, 2000)
+            getRandomInt(0, 700)
         );
     });
 };

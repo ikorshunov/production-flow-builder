@@ -1,6 +1,6 @@
 import { Connection, Edge } from '@xyflow/react';
 
-import { NodeType } from './nodes/types';
+import { NodeStateType, NodeType } from './nodes/types';
 import { SourceHandleId, TargetHandleId } from './types';
 
 export function isSourceHandle(
@@ -32,7 +32,7 @@ export const createNewNode = (
     position: { x: number; y: number }
 ): NodeType => {
     const nodeTemplate = {
-        id: crypto.randomUUID(),
+        id: '',
         position,
     };
 
@@ -68,6 +68,36 @@ export const createNewNode = (
                         rubber: 0,
                         paint: 0,
                     },
+                },
+            };
+    }
+};
+
+export const createNewNodeState = (
+    type: Exclude<NodeType['type'], undefined>
+): NodeStateType => {
+    switch (type) {
+        case 'supplier': {
+            return {
+                resource: 'unknown',
+            };
+        }
+        case 'power':
+            return {
+                source: 'unknown',
+            };
+        case 'factory':
+            return {
+                product: 'unknown',
+            };
+        case 'store':
+            return {
+                prices: {
+                    power: 0,
+                    coal: 0,
+                    paint: 0,
+                    rubber: 0,
+                    rubberDuck: 0,
                 },
             };
     }

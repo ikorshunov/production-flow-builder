@@ -10,10 +10,14 @@ export const useEditorStateMutation = (modelId: string) => {
     const modelQueryKey = getModelQueryKey(modelId);
 
     return useMutation({
-        mutationFn: (state: EditorState) => {
+        mutationFn: (params: { state: EditorState; isLocal?: boolean }) => {
+            const { state, isLocal } = params;
+            if (isLocal) {
+                return Promise.resolve();
+            }
             return updateEditorState({ modelId, state });
         },
-        onMutate: (newEditorState) => {
+        onMutate: ({ state: newEditorState }) => {
             const prevModel =
                 queryClient.getQueryData<ModelState>(modelQueryKey);
             queryClient.setQueryData<ModelState>(modelQueryKey, (prevModel) => {
@@ -24,8 +28,10 @@ export const useEditorStateMutation = (modelId: string) => {
             });
             return prevModel;
         },
-        onSuccess: () => {
-            void queryClient.invalidateQueries({ queryKey: modelQueryKey });
+        onSuccess: (_data, { isLocal }) => {
+            if (!isLocal) {
+                void queryClient.invalidateQueries({ queryKey: modelQueryKey });
+            }
         },
         onError: (_err, _variables, context) => {
             queryClient.setQueryData<ModelState>(modelQueryKey, context);

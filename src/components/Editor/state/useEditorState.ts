@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
 
 import { Context } from './EditorContext';
+import { EditorState } from './types';
 
 export const useEditorState = () => {
     const {
@@ -13,5 +14,8 @@ export const useEditorState = () => {
         [setEditorState]
     );
 
-    return [editorState, updateEditorState];
+    return [editorState, updateEditorState] as [
+        EditorState,
+        typeof updateEditorState,
+    ];
 };

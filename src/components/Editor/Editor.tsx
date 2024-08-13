@@ -1,11 +1,10 @@
-import { DragEvent, useCallback, useState } from 'react';
+import { DragEvent, useCallback } from 'react';
 import {
     addEdge,
     applyEdgeChanges,
     applyNodeChanges,
     Background,
     Controls,
-    Edge,
     IsValidConnection,
     OnConnect,
     OnEdgesChange,
@@ -15,26 +14,64 @@ import {
 } from '@xyflow/react';
 
 import { NodeSelectorPanel } from './panels/NodeSelectorPanel';
-import { isSourceHandle, isTargetHandle, createNewNode } from './helpers';
+import {
+    isSourceHandle,
+    isTargetHandle,
+    createNewNode,
+    createNewNodeState,
+} from './helpers';
 import { nodeTypes } from './nodeTypes';
 import { NodeType } from './nodes/types';
 import { ResourceType } from './types';
+import { useEditorState } from './state/useEditorState';
+import { useCreateNode } from './state/useCreateNode';
 
 export const Editor = () => {
-    const [nodes, setNodes] = useState<NodeType[]>([]);
-    const [edges, setEdges] = useState<Edge[]>([]);
+    const [editorState, updateEditorState] = useEditorState();
+    const createNode = useCreateNode();
+    const { nodes, edges } = editorState;
 
     const handleNodesChange: OnNodesChange<NodeType> = useCallback(
-        (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-        []
+        (changes) => {
+            const hasDraggingInProgress = changes.some(
+                (change) => change.type === 'position' && change.dragging
+            );
+
+            const updatedNodes = applyNodeChanges(changes, editorState.nodes);
+            updateEditorState({
+                state: {
+                    ...editorState,
+                    nodes: updatedNodes,
+                },
+                // Avoid redundant updates while dragging.
+                isLocal: hasDraggingInProgress,
+            });
+        },
+        [editorState, updateEditorState]
     );
     const handleEdgesChange: OnEdgesChange = useCallback(
-        (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-        []
+        (changes) => {
+            const updatedEdges = applyEdgeChanges(changes, editorState.edges);
+            updateEditorState({
+                state: {
+                    ...editorState,
+                    edges: updatedEdges,
+                },
+            });
+        },
+        [editorState, updateEditorState]
     );
     const handleConnect: OnConnect = useCallback(
-        (connection) => setEdges((eds) => addEdge(connection, eds)),
-        []
+        (connection) => {
+            const updatedEdges = addEdge(connection, editorState.edges);
+            updateEditorState({
+                state: {
+                    ...editorState,
+                    edges: updatedEdges,
+                },
+            });
+        },
+        [editorState, updateEditorState]
     );
 
     const validateNewConnection: IsValidConnection = useCallback(
@@ -86,9 +123,10 @@ export const Editor = () => {
                 y: event.clientY,
             });
             const newNode = createNewNode(type, position);
-            setNodes((nds) => nds.concat(newNode));
+            const newNodeState = createNewNodeState(type);
+            createNode({ node: newNode, nodeState: newNodeState });
         },
-        [screenToFlowPosition]
+        [createNode, screenToFlowPosition]
     );
 
     return (

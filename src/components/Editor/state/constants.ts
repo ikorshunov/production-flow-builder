@@ -12,5 +12,6 @@ export const initialContextValue: EditorContextValue = {
     api: {
         setNodeState: () => {},
         setEditorState: () => {},
+        createNode: () => {},
     },
 };
