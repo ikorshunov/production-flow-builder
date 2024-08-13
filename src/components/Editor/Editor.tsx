@@ -1,4 +1,4 @@
-import { DragEvent, useCallback } from 'react';
+import { DragEvent, useCallback, useState } from 'react';
 import {
     addEdge,
     applyEdgeChanges,
@@ -6,6 +6,7 @@ import {
     Background,
     Controls,
     IsValidConnection,
+    NodeMouseHandler,
     OnConnect,
     OnEdgesChange,
     OnNodesChange,
@@ -22,11 +23,22 @@ import {
 } from './helpers';
 import { nodeTypes } from './nodeTypes';
 import { NodeType } from './nodes/types';
-import { ResourceType } from './types';
+import { NodeCategory, ResourceType } from './types';
 import { useEditorState } from './state/useEditorState';
 import { useCreateNode } from './state/useCreateNode';
+import { NodeStateModal } from './NodeStateModal';
 
 export const Editor = () => {
+    const [editedNode, setEditedNode] = useState<{
+        nodeId: string;
+        nodeCategory: NodeCategory;
+    }>();
+    const handleOpenChange = useCallback((open: boolean) => {
+        if (!open) {
+            setEditedNode(undefined);
+        }
+    }, []);
+
     const [editorState, updateEditorState] = useEditorState();
     const createNode = useCreateNode();
     const { nodes, edges } = editorState;
@@ -73,6 +85,13 @@ export const Editor = () => {
         },
         [editorState, updateEditorState]
     );
+
+    const handleNodeClick = useCallback<NodeMouseHandler>((_event, node) => {
+        setEditedNode({
+            nodeId: node.id,
+            nodeCategory: node.type as NodeCategory,
+        });
+    }, []);
 
     const validateNewConnection: IsValidConnection = useCallback(
         (connection) => {
@@ -130,20 +149,31 @@ export const Editor = () => {
     );
 
     return (
-        <ReactFlow<NodeType>
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={handleNodesChange}
-            onEdgesChange={handleEdgesChange}
-            onConnect={handleConnect}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            isValidConnection={validateNewConnection}
-            nodeTypes={nodeTypes}
-        >
-            <NodeSelectorPanel />
-            <Background />
-            <Controls />
-        </ReactFlow>
+        <>
+            <ReactFlow<NodeType>
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={handleNodesChange}
+                onEdgesChange={handleEdgesChange}
+                onConnect={handleConnect}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onNodeClick={handleNodeClick}
+                isValidConnection={validateNewConnection}
+                nodeTypes={nodeTypes}
+            >
+                <NodeSelectorPanel />
+                <Background />
+                <Controls />
+            </ReactFlow>
+            {editedNode && editedNode.nodeCategory !== 'store' && (
+                <NodeStateModal
+                    open
+                    onOpenChange={handleOpenChange}
+                    nodeId={editedNode.nodeId}
+                    nodeCategory={editedNode.nodeCategory}
+                />
+            )}
+        </>
     );
 };

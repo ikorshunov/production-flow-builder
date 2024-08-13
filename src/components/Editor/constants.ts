@@ -20,6 +20,7 @@ export const categoryLayoutConfigMap: Record<
     NodeCategory,
     {
         name: string;
+        editText: string;
         nodeColor: HexColor;
         icon: IconType;
         iconColor: HexColor;
@@ -27,24 +28,28 @@ export const categoryLayoutConfigMap: Record<
 > = {
     supplier: {
         name: 'Supplies',
+        editText: 'Choose resource this node will be supplying',
         nodeColor: '#d6ff8f',
         icon: HiArrowRightEndOnRectangle,
         iconColor: '#3b8fff',
     },
     power: {
         name: 'Power',
+        editText: 'Choose energy source',
         nodeColor: '#ffb392',
         icon: ImPower,
         iconColor: '#ffda00',
     },
     factory: {
         name: 'Factories',
+        editText: 'Choose what this factory will be producing',
         nodeColor: '#c0ebff',
         icon: MdFactory,
         iconColor: '#9b5151',
     },
     store: {
         name: 'Stores',
+        editText: '',
         nodeColor: '#f8ccff',
         icon: IoStorefrontSharp,
         iconColor: '#dc029b',

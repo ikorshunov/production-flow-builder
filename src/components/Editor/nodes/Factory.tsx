@@ -11,31 +11,37 @@ export const Factory = (props: NodeProps<FactoryNode>) => {
     const [nodeState] = useNodeState<'factory'>({
         nodeId: id,
     });
-    const product = id ? nodeState.product : 'unknown';
-    const isUnknownProduct = product === 'unknown';
-    const name = isUnknownProduct ? 'Choose product' : `${product} factory`;
+    const resource = nodeState ? nodeState.resource : 'unknown';
+    const isUnknownResource = resource === 'unknown';
+    const name = isUnknownResource ? 'Choose product' : `${resource} factory`;
 
     const handles = [];
-    if (!isUnknownProduct) {
-        handles.push(<ResourceHandle type="source" resourceType={product} />);
-    }
-    if (product === 'rubberDuck') {
+    if (!isUnknownResource) {
         handles.push(
             <ResourceHandle
-                key="power"
+                key={`${resource}-source`}
+                type="source"
+                resourceType={resource}
+            />
+        );
+    }
+    if (resource === 'rubberDuck') {
+        handles.push(
+            <ResourceHandle
+                key="power-target"
                 resourceType="power"
                 className="top-4 -translate-x-1/2"
                 size="sm"
                 type="target"
             />,
             <ResourceHandle
-                key="rubber"
+                key="rubber-target"
                 resourceType="rubber"
                 size="sm"
                 type="target"
             />,
             <ResourceHandle
-                key="paint"
+                key="paint-target"
                 resourceType="paint"
                 className="bottom-4 top-auto -translate-x-1/2"
                 size="sm"
@@ -45,7 +51,7 @@ export const Factory = (props: NodeProps<FactoryNode>) => {
     }
 
     return (
-        <NodeLayout name={name} category="factory" iconName={product}>
+        <NodeLayout name={name} category="factory" iconName={resource}>
             {handles}
         </NodeLayout>
     );

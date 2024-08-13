@@ -77,28 +77,15 @@ export const createNewNodeState = (
     type: Exclude<NodeType['type'], undefined>
 ): NodeStateType => {
     switch (type) {
-        case 'supplier': {
+        case 'supplier':
+        case 'power':
+        case 'factory':
             return {
                 resource: 'unknown',
             };
-        }
-        case 'power':
-            return {
-                source: 'unknown',
-            };
-        case 'factory':
-            return {
-                product: 'unknown',
-            };
         case 'store':
             return {
-                prices: {
-                    power: 0,
-                    coal: 0,
-                    paint: 0,
-                    rubber: 0,
-                    rubberDuck: 0,
-                },
+                resource: 'any',
             };
     }
 };

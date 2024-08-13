@@ -10,26 +10,34 @@ export const PowerPlant = (props: NodeProps<PowerPlantNode>) => {
     const [nodeState] = useNodeState<'power'>({
         nodeId: id,
     });
-    const source = id ? nodeState.source : 'unknown';
-    const isUnknownSource = source === 'unknown';
-    const name = isUnknownSource
+    const resource = nodeState ? nodeState.resource : 'unknown';
+    const isUnknownResource = resource === 'unknown';
+    const name = isUnknownResource
         ? 'Choose energy source'
-        : `${source} power plant`;
+        : `${resource} power plant`;
 
     const handles = [];
-    if (!isUnknownSource) {
+    if (!isUnknownResource) {
         handles.push(
-            <ResourceHandle key="power" type="source" resourceType="power" />
+            <ResourceHandle
+                key="power-source"
+                type="source"
+                resourceType="power"
+            />
         );
     }
-    if (source === 'coal') {
+    if (resource === 'coal') {
         handles.push(
-            <ResourceHandle key="coal" type="target" resourceType="coal" />
+            <ResourceHandle
+                key="coal-target"
+                type="target"
+                resourceType="coal"
+            />
         );
     }
 
     return (
-        <NodeLayout name={name} category="power" iconName={source}>
+        <NodeLayout name={name} category="power" iconName={resource}>
             {handles}
         </NodeLayout>
     );

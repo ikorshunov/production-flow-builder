@@ -10,7 +10,7 @@ export const Supplier = (props: NodeProps<SupplierNode>) => {
     const [nodeState] = useNodeState<'supplier'>({
         nodeId: id,
     });
-    const resource = id ? nodeState.resource : 'unknown';
+    const resource = nodeState ? nodeState.resource : 'unknown';
     const isUnknownResource = resource === 'unknown';
     const name = isUnknownResource ? 'Choose resource' : `${resource} supplier`;
 

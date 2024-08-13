@@ -18,7 +18,7 @@ export const useNodeState = <T extends NodeCategory>(params: {
     ]);
 
     return [nodeState[nodeId]?.state, updateNodeState] as [
-        NodeStateMap[T],
+        NodeStateMap[T] | undefined,
         typeof setNodeState,
     ];
 };
