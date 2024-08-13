@@ -6,6 +6,7 @@ import {
     Background,
     Controls,
     IsValidConnection,
+    MiniMap,
     NodeMouseHandler,
     OnConnect,
     OnEdgesChange,
@@ -181,6 +182,7 @@ export const Editor = () => {
                 <NodeSelectorPanel onDragStart={handleDragStart} />
                 <Background />
                 <Controls />
+                <MiniMap />
             </ReactFlow>
             {editedNode && editedNode.nodeCategory !== 'store' && (
                 <NodeStateModal
