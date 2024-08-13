@@ -1,13 +1,17 @@
 import { NodeProps } from '@xyflow/react';
 
+import { useNodeState } from '../state/useNodeState';
+
 import { ResourceHandle } from '../ResourceHandle';
 import { NodeLayout } from './NodeLayout';
-import { FactoryNode, NodeStateMap } from './types';
+import { FactoryNode } from './types';
 
-type FactoryProps = NodeProps<FactoryNode> & NodeStateMap['factory'];
-
-export const Factory = (props: FactoryProps) => {
-    const { product = 'unknown' } = props;
+export const Factory = (props: NodeProps<FactoryNode>) => {
+    const { id } = props;
+    const [nodeState] = useNodeState<'factory'>({
+        nodeId: id,
+    });
+    const product = id ? nodeState.product : 'unknown';
     const isUnknownProduct = product === 'unknown';
     const name = isUnknownProduct ? 'Choose product' : `${product} factory`;
 

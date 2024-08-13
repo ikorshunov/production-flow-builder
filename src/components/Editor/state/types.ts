@@ -8,12 +8,12 @@ export type EditorState = {
     edges: Edge[];
 };
 
-export type NodeState = Record<
+export type NodeState<T extends NodeCategory = NodeCategory> = Record<
     string,
     {
         id: string;
-        type: NodeCategory;
-        state: NodeStateType;
+        type: T;
+        state: NodeStateMap[T];
     }
 >;
 

@@ -1,13 +1,16 @@
 import { NodeProps } from '@xyflow/react';
 
+import { useNodeState } from '../state/useNodeState';
 import { ResourceHandle } from '../ResourceHandle';
 import { NodeLayout } from './NodeLayout';
-import { NodeStateMap, PowerPlantNode } from './types';
+import { PowerPlantNode } from './types';
 
-type PowerPlantProps = NodeProps<PowerPlantNode> & NodeStateMap['power'];
-
-export const PowerPlant = (props: PowerPlantProps) => {
-    const { source = 'unknown' } = props;
+export const PowerPlant = (props: NodeProps<PowerPlantNode>) => {
+    const { id } = props;
+    const [nodeState] = useNodeState<'power'>({
+        nodeId: id,
+    });
+    const source = id ? nodeState.source : 'unknown';
     const isUnknownSource = source === 'unknown';
     const name = isUnknownSource
         ? 'Choose energy source'
