@@ -4,7 +4,7 @@ import { NodeProps, useUpdateNodeInternals } from '@xyflow/react';
 import { useNodeState } from '../state/useNodeState';
 import { ResourceHandle } from '../ResourceHandle';
 import { NodeLayout } from './NodeLayout';
-import { SupplierNode } from './types';
+import { SupplierNode } from '../types';
 
 export const Supplier = (props: NodeProps<SupplierNode>) => {
     const { id } = props;

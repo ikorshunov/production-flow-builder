@@ -1,4 +1,4 @@
-import { ModelState } from 'src/components/Editor/state/types';
+import { ModelState } from 'src/components/Editor/types';
 import { PROJECT_NAME } from '../components/Editor/constants';
 
 export type State = Record<string, ModelState>;

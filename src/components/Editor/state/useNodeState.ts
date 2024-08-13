@@ -1,5 +1,4 @@
-import { NodeStateMap } from '../nodes/types';
-import { NodeCategory } from '../types';
+import { NodeCategory, NodeStateMap } from '../types';
 import { useEditorContext } from './useEditorContext';
 
 export const useNodeState = <T extends NodeCategory>(nodeId: string) => {

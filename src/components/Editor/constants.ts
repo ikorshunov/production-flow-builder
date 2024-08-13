@@ -5,7 +5,7 @@ import { MdFactory } from 'react-icons/md';
 import { IoStorefrontSharp } from 'react-icons/io5';
 
 import { HexColor } from 'src/types';
-import { NodeCategory } from './types';
+import { EditorContextValue, NodeCategory } from './types';
 
 export const PROJECT_NAME = 'productionFlowBuilder';
 
@@ -62,3 +62,18 @@ export const categoryNodeOptions = {
     factory: ['rubberDuck'],
     store: ['any'],
 } as const;
+
+export const initialContextValue: EditorContextValue = {
+    model: {
+        id: '',
+        editorState: {
+            nodes: [],
+            edges: [],
+        },
+        nodeState: {},
+    },
+    api: {
+        setNodeState: () => {},
+        setEditorState: () => {},
+    },
+};

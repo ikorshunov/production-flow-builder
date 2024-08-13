@@ -1,4 +1,4 @@
-import { ModelState } from '../components/Editor/state/types';
+import { ModelState } from '../components/Editor/types';
 import { readFromLocalStorage } from './helpers';
 
 export const getModel = (id: string): Promise<ModelState> => {

@@ -9,11 +9,15 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { ImSpinner9 } from 'react-icons/im';
 
 import { getModel } from 'src/api/getModel';
-import { NodeType, NodeStateType } from '../nodes/types';
-import { PROJECT_NAME } from '../constants';
-import { initialContextValue } from './constants';
-import { EditorContextValue, EditorState, ModelState } from './types';
 import { updateModel } from 'src/api/updateModal';
+import { initialContextValue, PROJECT_NAME } from '../constants';
+import {
+    EditorContextValue,
+    ModelState,
+    NodeType,
+    NodeStateType,
+    EditorState,
+} from '../types';
 
 type EditorContextProps = PropsWithChildren<{
     modelId: string;

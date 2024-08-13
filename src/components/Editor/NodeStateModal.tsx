@@ -1,11 +1,10 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
-import { NodeCategory } from './types';
+import { NodeCategory, NodeStateType } from './types';
 import { categoryLayoutConfigMap, categoryNodeOptions } from './constants';
 import { ResourceIcon } from './ResourceIcon';
 import { useEffect, useState } from 'react';
-import { NodeStateType } from './nodes/types';
 import { useNodeState } from './state/useNodeState';
 import { useEditorContext } from './state/useEditorContext';
 

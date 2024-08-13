@@ -2,7 +2,7 @@ import { DragEvent, useCallback } from 'react';
 import { Panel } from '@xyflow/react';
 
 import { ToolbarNode } from './nodes/ToolbarNode';
-import { NodeType } from './nodes/types';
+import { NodeType } from './types';
 import { categories } from './constants';
 
 type NodeSelectorPanelProps = {

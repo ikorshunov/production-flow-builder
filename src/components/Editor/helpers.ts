@@ -1,7 +1,11 @@
 import { Connection, Edge } from '@xyflow/react';
 
-import { NodeStateType, NodeType } from './nodes/types';
-import { SourceHandleId, TargetHandleId } from './types';
+import {
+    SourceHandleId,
+    TargetHandleId,
+    NodeStateType,
+    NodeType,
+} from './types';
 
 export function isSourceHandle(
     sourceHandle: Connection['sourceHandle'] | Edge['sourceHandle']

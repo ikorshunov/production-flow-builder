@@ -4,7 +4,7 @@ import { NodeProps, useUpdateNodeInternals } from '@xyflow/react';
 import { useNodeState } from '../state/useNodeState';
 import { ResourceHandle } from '../ResourceHandle';
 import { NodeLayout } from './NodeLayout';
-import { PowerPlantNode } from './types';
+import { PowerPlantNode } from '../types';
 
 export const PowerPlant = (props: NodeProps<PowerPlantNode>) => {
     const { id } = props;

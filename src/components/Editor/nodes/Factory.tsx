@@ -3,8 +3,8 @@ import { NodeProps, useUpdateNodeInternals } from '@xyflow/react';
 
 import { useNodeState } from '../state/useNodeState';
 import { ResourceHandle } from '../ResourceHandle';
+import { FactoryNode } from '../types';
 import { NodeLayout } from './NodeLayout';
-import { FactoryNode } from './types';
 
 export const Factory = (props: NodeProps<FactoryNode>) => {
     const { id } = props;

@@ -25,8 +25,7 @@ import {
     createNewNodeState,
 } from './helpers';
 import { nodeTypes } from './nodeTypes';
-import { NodeType } from './nodes/types';
-import { NodeCategory, ResourceType } from './types';
+import { NodeCategory, NodeType, ResourceType } from './types';
 import { NodeStateModal } from './NodeStateModal';
 import { useEditorContext } from './state/useEditorContext';
 

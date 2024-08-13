@@ -1,4 +1,4 @@
-import { ModelState } from '../components/Editor/state/types';
+import { ModelState } from '../components/Editor/types';
 import { readFromLocalStorage, writeToLocalStorage } from './helpers';
 
 export const updateModel = (model: ModelState): Promise<ModelState> => {
