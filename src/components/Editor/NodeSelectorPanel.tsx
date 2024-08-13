@@ -23,9 +23,12 @@ export const NodeSelectorPanel = (props: NodeSelectorPanelProps) => {
         [onDragStart]
     );
     return (
-        <Panel position="top-right" className="flex flex-col gap-2 select-none">
-            <h1>Pick a node:</h1>
-            <div className="flex gap-4">
+        <Panel
+            position="top-right"
+            className="flex flex-col justify-end gap-2 select-none"
+        >
+            <h1>Pick nodes and try to connect them to each other:</h1>
+            <div className="flex gap-4 justify-end">
                 {categories.map((categoryName) => {
                     return (
                         <ToolbarNode
